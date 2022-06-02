@@ -7,6 +7,9 @@ var engine, world,ground;
 var hogwarts;
 var rapunzel;
 var enrolados;
+var bomba; 
+var agudo;
+var sid; 
 
 
 function preload() {
@@ -30,6 +33,12 @@ function setup() {
  rapunzel = Bodies.rectangle(160, 350, 160, 310, options);
  World.add(world,rapunzel);
  
+ angleMode(DEGREES);
+ agudo = 20;
+
+ bomba = new EraDoGelo (180, 110, 130, 100, agudo);
+
+ sid = new Sid (bomba.posX, bomba.posY);
 }
 
 function draw() {
@@ -44,5 +53,13 @@ function draw() {
  imageMode(CENTER);
  image(enrolados,rapunzel.position.x, rapunzel.position.y, 160, 310);
  pop();
-   
+  
+ bomba.jack();
+ sid.preguica();
+}
+
+function keyReleased(){
+    if(keyCode === DOWN_ARROW){
+      sid.dorminhoco();
+    }
 }
