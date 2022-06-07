@@ -31,6 +31,8 @@ var bomba;
 var agudo;
 var sid; 
 
+var nerf = [];
+
 
 function preload() {
   hogwarts = loadImage("./assets/background.gif");
@@ -58,7 +60,6 @@ function setup() {
 
  bomba = new EraDoGelo (180, 110, 130, 100, agudo);
 
- sid = new Sid (bomba.posX, bomba.posY);
 }
 
 function draw() {
@@ -75,11 +76,29 @@ function draw() {
  pop();
   
  bomba.jack();
- sid.preguica();
+ 
+ for(var i=0; i < nerf.length; i++){
+    nerfar(nerf[i], i);
+ }
 }
 
 function keyReleased(){
     if(keyCode === DOWN_ARROW){
-      sid.dorminhoco();
+      nerf[nerf.length -1].dorminhoco();
     }
 }
+
+function keyPressed () {
+  if (keyCode === DOWN_ARROW){
+    var sid = new Sid (bomba.posX, bomba.posY);
+    nerf.push(sid);
+  }
+}
+ 
+function nerfar (sid, i) {
+  if (sid){
+    sid.preguica();
+  }
+}
+
+
