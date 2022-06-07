@@ -1,3 +1,23 @@
+//Revisão de Matrizes
+//Matriz com números
+var matriz1 = [1,5,78,21,25];
+console.log(matriz1);
+//Matriz com diferentes tipos de dados
+var matriz2 = ["Melissa", 25, true];
+//console.log(matriz2);
+//Matriz de matrizes
+var matriz3 = [matriz1, matriz2];
+//console.log(matriz3);
+//Acessando os elementos de acordo com o índice
+//console.log(matriz1[3]);
+//console.log(matriz2[1]);
+//console.log(matriz3[0][2]);
+//Adicionando e retirando elementos da matriz
+matriz1.push(125),
+//console.log(matriz1);
+matriz1.pop();
+//console.log(matriz1);
+
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
