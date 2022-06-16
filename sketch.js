@@ -30,8 +30,10 @@ var enrolados;
 var bomba; 
 var agudo;
 var sid; 
+var perolanegra;
 
 var nerf = [];
+
 
 
 function preload() {
@@ -60,6 +62,8 @@ function setup() {
 
  bomba = new EraDoGelo (180, 110, 130, 100, agudo);
 
+ perolanegra = new PerolaNegra(width-79, height-60, 170, 170, -80);
+
 }
 
 function draw() {
@@ -80,6 +84,9 @@ function draw() {
  for(var i=0; i < nerf.length; i++){
     nerfar(nerf[i], i);
  }
+
+ Matter.Body.setVelocity(perolanegra.body, {x: -0.9, y: 0});
+ perolanegra.luneta();
 }
 
 function keyReleased(){
