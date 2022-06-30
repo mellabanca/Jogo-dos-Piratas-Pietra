@@ -33,12 +33,16 @@ var sid;
 var perolanegra;
 
 var nerf = [];
-
+var cruzeiro = [];
+var cruzeiroAnimation = [];
+var cruzeiroDados, cruzeiroSpritesheet;
 
 
 function preload() {
   hogwarts = loadImage("./assets/background.gif");
   enrolados = loadImage("./assets/tower.png");
+  cruzeiroDados = loadJSON("./assets/boat/boat.json");
+  cruzeiroSpritesheet = loadImage("./assets/boat/boat.png");
 }
 
 function setup() {
@@ -62,7 +66,12 @@ function setup() {
 
  bomba = new EraDoGelo (180, 110, 130, 100, agudo);
 
- perolanegra = new PerolaNegra(width-79, height-60, 170, 170, -80);
+ var cruzeiroFrames = cruzeiroDados.frames;
+ for(var i = 0; i < cruzeiroFrames.length; i++){
+  var pos = cruzeiroFrames[i].position;
+  var img = cruzeiroSpritesheet.get(pos.x, pos.x, pos.w, pos.h);
+  cruzeiroAnimation.push(img);
+ }
 
 }
 
@@ -83,10 +92,10 @@ function draw() {
  
  for(var i=0; i < nerf.length; i++){
     nerfar(nerf[i], i);
+    borracha(i);
  }
-
- Matter.Body.setVelocity(perolanegra.body, {x: -0.9, y: 0});
- perolanegra.luneta();
+ 
+ estaleiro ();
 }
 
 function keyReleased(){
@@ -105,7 +114,45 @@ function keyPressed () {
 function nerfar (sid, i) {
   if (sid){
     sid.preguica();
+    if (sid.body.position.x >= width || sid.body.position.y >= height-50){
+      sid.bomba(i);
+    }
+  }
+}
+
+function estaleiro () {
+  if (cruzeiro.length > 0) {
+
+    if (cruzeiro[cruzeiro.length-1] === undefined || cruzeiro[cruzeiro.length-1].body.position.x<width-300){
+      var positions = [-40, -60, -70, -20];
+      var position = random (positions);
+      var perolanegra = new PerolaNegra(width, height-100, 170, 170, position, cruzeiroAnimation);
+      cruzeiro.push (perolanegra);
+    }
+    for (var i = 0; i<cruzeiro.length; i++) {
+    if (cruzeiro[i])  {
+    Matter.Body.setVelocity(cruzeiro[i].body, {x: -0.9, y: 0});
+    cruzeiro[i].luneta();
+    cruzeiro[i].pixer();
+  } 
+   } 
+  }
+  else {
+  var perolanegra = new PerolaNegra(width, height-60, 170, 170, -80, cruzeiroAnimation);
+  cruzeiro.push (perolanegra);
   }
 }
 
 
+function borracha (index){
+  for (var i = 0; i<cruzeiro.length; i++) {
+    if (nerf[index] !== undefined && cruzeiro[i] !== undefined){
+    var pavio = Matter.SAT.collides (nerf[index].body, cruzeiro[i].body);  
+    if (pavio.collided){
+      cruzeiro[i].bomba(i); 
+      Matter.World.remove (world, nerf[index].body);
+      delete nerf[index];
+    }
+    }
+  }
+}
