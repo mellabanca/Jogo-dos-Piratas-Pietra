@@ -8,6 +8,7 @@ class PerolaNegra {
         this.ostra = loadImage("./assets/boat.png");
         this.anim = anim;
         this.vel = 0.05;
+        this.afun = false;
     }
 
     pixer(){
@@ -28,6 +29,11 @@ class PerolaNegra {
     }
 
     bomba (index){
+        this.anim = titanic;
+        this.vel = 0.05;
+        this.lar = 300;
+        this.alt = 300;
+        this.afun = true;
         setTimeout (()=>{
             Matter.World.remove (world, cruzeiro[index].body);
             delete cruzeiro[index];

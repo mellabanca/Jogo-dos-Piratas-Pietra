@@ -36,6 +36,13 @@ var nerf = [];
 var cruzeiro = [];
 var cruzeiroAnimation = [];
 var cruzeiroDados, cruzeiroSpritesheet;
+var titanic = [];
+var titanicDados, titanicSpritesheet;
+var ocean = [];
+var oceanDados, oceanSpritesheet;
+var gameOver = false;
+
+
 
 
 function preload() {
@@ -43,6 +50,10 @@ function preload() {
   enrolados = loadImage("./assets/tower.png");
   cruzeiroDados = loadJSON("./assets/boat/boat.json");
   cruzeiroSpritesheet = loadImage("./assets/boat/boat.png");
+  titanicDados = loadJSON ("./assets/boat/brokenBoat.json");
+  titanicSpritesheet = loadImage ("./assets/boat/brokenBoat.png");
+  oceanDados = loadJSON ("./assets/waterSplash/waterSplash.json");
+  oceanSpritesheet = loadImage ("./assets/waterSplash/waterSplash.png");
 }
 
 function setup() {
@@ -69,8 +80,22 @@ function setup() {
  var cruzeiroFrames = cruzeiroDados.frames;
  for(var i = 0; i < cruzeiroFrames.length; i++){
   var pos = cruzeiroFrames[i].position;
-  var img = cruzeiroSpritesheet.get(pos.x, pos.x, pos.w, pos.h);
+  var img = cruzeiroSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
   cruzeiroAnimation.push(img);
+ }
+
+ var titanicFrames = titanicDados.frames;
+ for(var i = 0; i < titanicFrames.length; i++){
+  var pos = titanicFrames[i].position;
+  var img = titanicSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+  titanic.push(img);
+ }
+
+ var oceanFrames = oceanDados.frames;
+ for(var i = 0; i < oceanFrames.length; i++){
+  var pos = oceanFrames[i].position;
+  var img = oceanSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+  ocean.push(img);
  }
 
 }
@@ -114,6 +139,7 @@ function keyPressed () {
 function nerfar (sid, i) {
   if (sid){
     sid.preguica();
+    sid.pixer();
     if (sid.body.position.x >= width || sid.body.position.y >= height-50){
       sid.bomba(i);
     }
@@ -134,6 +160,11 @@ function estaleiro () {
     Matter.Body.setVelocity(cruzeiro[i].body, {x: -0.9, y: 0});
     cruzeiro[i].luneta();
     cruzeiro[i].pixer();
+    var boom = Matter.SAT.collides(rapunzel, cruzeiro[i].body);
+    if(boom.collided && !cruzeiro[i].afun){
+      gameOver = true;
+      theEnd();
+    }
   } 
    } 
   }
@@ -155,4 +186,19 @@ function borracha (index){
     }
     }
   }
+}
+
+function theEnd(){
+  swal({
+    title: "The End!",
+    text: "Obrigada, marujo!",
+    imageUrl: "https://raw.githubusercontent.com/whitehatjr/PiratesInvasion/main/assets/boat.png",
+    imageSize: "150x150",
+    confirmButtonText: "Vamos navegar de novo!"
+  },
+  function(botaoPressionado){
+    if(botaoPressionado){
+      location.reload();
+    }
+  })
 }
